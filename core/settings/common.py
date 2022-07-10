@@ -28,6 +28,9 @@ DEFAULT_INSTALLED_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
+    'djoser',
 ]
 
 CUSTOM_APPS = [
@@ -35,9 +38,14 @@ CUSTOM_APPS = [
 ]
 INSTALLED_APPS = DEFAULT_INSTALLED_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -114,7 +122,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'static/'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
