@@ -31,11 +31,13 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'djoser',
+    'drf_yasg',
 ]
 
 CUSTOM_APPS = [
-
+    'product.apps.ProductConfig',
 ]
+
 INSTALLED_APPS = DEFAULT_INSTALLED_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
 
 CORS_ALLOWED_ORIGINS = [
