@@ -13,8 +13,8 @@
       <div class="navbar-menu" id="navbar-menu" v-bind:class="{ 'is-active': showMobileMenu }">
         <div class="navbar-end">
 
-          <router-link v-bind:to="'/categories/' + category.slug + '/'" class="navbar-item" v-for="category in categories"
-            v-bind:key="category.slug">
+          <router-link v-bind:to="'/categories/' + category.slug + '/'" class="navbar-item"
+            v-for="category in categories" v-bind:key="category.slug">
             {{ category.name }}
           </router-link>
 
@@ -23,7 +23,7 @@
               <router-link to="/login" class="button is-light">Login</router-link>
               <router-link to="/cart" class="button is-success">
                 <span class="icon"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
-                <span>Cart ({{ cartTotalLength}})</span>
+                <span>Cart ({{ cartTotalLength }})</span>
               </router-link>
             </div>
           </div>
@@ -31,7 +31,7 @@
       </div>
     </nav>
 
-    <div class="is-loading-bar has-text-centered" :class="{'is-loading': $store.state.isLoading}">
+    <div class="is-loading-bar has-text-centered" :class="{ 'is-loading': $store.state.isLoading }">
       <div class="lds-dual-ring"></div>
     </div>
 
@@ -62,24 +62,13 @@ export default {
   beforeCreate() {
     this.$store.commit('initializeStore')
   },
-  mounted(){
+  mounted() {
     this.cart = this.$store.state.cart
     this.getCategories()
   },
-  computed: {
-    cartTotalLength() {
-      let totalLength = 0
-
-      for (let i = 0; i < this.cart.items.length; i++) {
-        totalLength += this.cart.items[i].quantity
-      }
-
-      return totalLength
-    },
-  },
   methods: {
     async getCategories() {
-      this.$store.commit('setIsLoading', true) 
+      this.$store.commit('setIsLoading', true)
 
       await axios
         .get('/api/categories/')
@@ -97,9 +86,20 @@ export default {
             position: 'bottom-right',
           })
         })
-      this.$store.commit('setIsLoading', false) 
+      this.$store.commit('setIsLoading', false)
     },
-  }
+  },
+  computed: {
+    cartTotalLength() {
+      let totalLength = 0
+
+      for (let i = 0; i < this.cart.items.length; i++) {
+        totalLength += this.cart.items[i].quantity
+      }
+
+      return totalLength
+    },
+  },
 }
 </script>
 <style lang="scss">
@@ -111,9 +111,9 @@ export default {
   height: 80px;
 }
 
-.lds-dual-ring::after{
+.lds-dual-ring::after {
   content: "";
-  display:block;
+  display: block;
   width: 64px;
   height: 64px;
   margin: 8px;
@@ -124,21 +124,22 @@ export default {
 }
 
 @keyframes lds-dual-ring {
-  0% { 
+  0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
 }
 
-.is-loading-bar{
+.is-loading-bar {
   height: 0;
   overflow: hidden;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 
-  &.is-loading{
+  &.is-loading {
     height: 80px;
   }
 }
