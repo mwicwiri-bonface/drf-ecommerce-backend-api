@@ -16,9 +16,11 @@
 
     <div class="column is-3" v-for="product in latestProducts" v-bind:key="product.id">
       <div class="box">
-        <figure class="image mb-4">
-          <img :src="product.get_thumbnail" />
-        </figure>
+        <router-link :to="'/products/' + product.slug + '/'">
+          <figure class="image mb-4">
+            <img :src="product.get_thumbnail" />
+          </figure>
+        </router-link>
 
         <h3 class="is-size-4">{{product.name}}</h3>
 
@@ -44,18 +46,32 @@ export default {
   },
   mounted(){
     this.getLatestProducts()
+
+    document.title = 'Home | Djackets'
   },
   methods: {
-    getLatestProducts(){
-      axios
-      .get('/api/products/')
-      .then(response => {
-        let data = response.data
-        this.latestProducts = data['results']
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    async getLatestProducts(){
+      this.$store.commit('setIsLoading', true) 
+
+
+      await axios
+        .get('/api/products/')
+        .then(response => {
+          let data = response.data
+          this.latestProducts = data['results']
+        })
+        .catch(error => {
+          console.log(error)
+          toast({
+            message: 'Something went wrong, please try again',
+            type: 'is-danger',
+            dismissible: true,
+            pauseOnHover: true,
+            duration: 2000,
+            position: 'bottom-right',
+          })
+        })
+      this.$store.commit('setIsLoading', false)
     }
   }
 
