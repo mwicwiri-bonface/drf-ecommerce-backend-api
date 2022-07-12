@@ -1,8 +1,12 @@
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.db.models import Q
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import api_view
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
 from product.api.pagination import StandardResultsPagination
 from product.api.serializers import CategorySerializer, ProductSerializer
@@ -80,3 +84,16 @@ class ProductRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'slug'
+
+
+@api_view(['POST'])
+def search(request):
+    query = request.data.get('query', '')
+    vector = SearchVector('name', weight='A') + SearchVector('description', weight='B')
+    query = SearchQuery(query)
+    if query:
+        products = Product.objects.annotate(rank=SearchRank(
+            vector, query, cover_density=True)).filter(rank__gte=0.2).order_by('-rank')
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+    return Response({"product": []})

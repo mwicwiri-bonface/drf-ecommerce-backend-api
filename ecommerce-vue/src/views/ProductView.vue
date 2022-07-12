@@ -3,18 +3,18 @@
     <div class="columns is-multiline">
 
       <div class="column is-9">
-        <figure class="image mb-6">
+        <figure class="image is-6by7 mb-6">
           <img :src="product.get_image" />
         </figure>
 
-        <h1 class="title">{{product.name}}</h1>
+        <h1 class="title">{{ product.name }}</h1>
 
-        <p>{{product.description}}</p>
+        <p>{{ product.description }}</p>
       </div>
 
       <div class="column is-3">
         <h2 class="subtitle">Information</h2>
-        <p><strong>Price: </strong> ${{product.price}}</p>
+        <p><strong>Price: </strong> ${{ product.price }}</p>
 
         <div class="field has-addons mt-6">
           <div class="control">
@@ -42,11 +42,11 @@ export default {
       quantity: 1
     }
   },
-  mounted(){
+  mounted() {
     this.getProduct()
   },
   methods: {
-    async getProduct(){
+    async getProduct() {
       this.$store.commit('setIsLoading', true)
 
 
@@ -98,5 +98,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
