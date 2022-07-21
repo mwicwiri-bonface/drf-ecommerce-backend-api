@@ -93,7 +93,7 @@ def search(request):
     query = SearchQuery(query)
     if query:
         products = Product.objects.annotate(rank=SearchRank(
-            vector, query, cover_density=True)).filter(rank__gte=0.2).order_by('-rank')
+            vector, query, cover_density=True)).filter(rank__gte=0.1).order_by('-rank')
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
     return Response({"product": []})

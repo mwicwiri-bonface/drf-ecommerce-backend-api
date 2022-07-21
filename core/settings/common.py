@@ -37,6 +37,7 @@ THIRD_PARTY_APPS = [
 
 CUSTOM_APPS = [
     'product.apps.ProductConfig',
+    'order.apps.OrderConfig',
 ]
 
 INSTALLED_APPS = DEFAULT_INSTALLED_APPS + THIRD_PARTY_APPS + CUSTOM_APPS
@@ -131,3 +132,6 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')

@@ -2,7 +2,7 @@
   <div id="wrapper">
     <nav class="navbar is-dark">
       <div class="navbar-brand">
-        <router-link to="/" class="navbar-item"><strong>Djackets</strong></router-link>
+        <router-link to="/" class="navbar-item"><strong>MaliSafi</strong></router-link>
         <a class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu"
           @click="showMobileMenu = !showMobileMenu">
           <span aria-hidden="true"></span>
@@ -14,21 +14,10 @@
 
         <div class="navbar-start">
           <div class="navbar-item">
-            <form method="get" action="/search">
-              <div class="field has-addons">
-                <div class="control">
-                  <input type="text" class="input" placeholder="What are you looking for?" name="query">
-                </div>
-                <div class="control">
-                  <button class="button is-success">
-                    <span class="icon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                  </button>
-                </div>
-              </div>
-            </form>
+            <Search />
           </div>
         </div>
-        
+
         <div class="navbar-end">
           <router-link v-bind:to="'/categories/' + category.slug + '/'" class="navbar-item"
             v-for="category in categories" v-bind:key="category.slug">
@@ -36,7 +25,12 @@
           </router-link>
           <div class="navbar-item">
             <div class="buttons">
-              <router-link to="/login" class="button is-light">Login</router-link>
+              <template v-if="$store.state.isAuthenticated">
+                <router-link to="/my-account" class="button is-light">My Account</router-link>
+              </template>
+              <template v-else>
+                <router-link to="/log-in" class="button is-light">Login</router-link>
+              </template>
               <router-link to="/cart" class="button is-success">
                 <span class="icon"><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
                 <span>Cart ({{ cartTotalLength }})</span>
@@ -64,8 +58,12 @@
 <script>
 import axios from 'axios'
 import { toast } from 'bulma-toast'
+import Search from './views/SearchFunctionality.vue'
 
 export default {
+  components: {
+    Search
+  },
   data() {
     return {
       showMobileMenu: false,
@@ -77,6 +75,12 @@ export default {
   },
   beforeCreate() {
     this.$store.commit('initializeStore')
+    const token = this.$store.state.token
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = 'Token ' + token
+    } else {
+      axios.defaults.headers.common['Authorization'] = ''
+    }
   },
   mounted() {
     this.cart = this.$store.state.cart
