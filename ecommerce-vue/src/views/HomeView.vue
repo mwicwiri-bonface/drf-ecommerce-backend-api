@@ -43,7 +43,7 @@ export default {
 
 
       await axios
-        .get('/api/products/')
+        .get('/api/v1/products/')
         .then(response => {
           let data = response.data
           this.latestProducts = data['results']

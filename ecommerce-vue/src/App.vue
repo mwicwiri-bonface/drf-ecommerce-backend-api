@@ -91,7 +91,7 @@ export default {
       this.$store.commit('setIsLoading', true)
 
       await axios
-        .get('/api/categories/')
+        .get('/api/v1/categories/')
         .then(response => {
           this.categories = response.data
         })

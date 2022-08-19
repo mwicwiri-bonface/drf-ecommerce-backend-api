@@ -53,7 +53,7 @@ export default {
       const slug = this.$route.params.slug
 
       await axios
-        .get(`/api/products/${slug}/`)
+        .get(`/api/v1/products/${slug}/`)
         .then(response => {
           this.product = response.data
 
